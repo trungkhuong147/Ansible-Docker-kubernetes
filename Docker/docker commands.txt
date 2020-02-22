@@ -1,0 +1,19 @@
+docker search centos/apache
+docker pull centos/apache
+
+docker images  # list images
+docker ps -l # list containers without the -l is for "active/running" containers
+docker run -it centos bash #interactive session
+
+docker start / stop / rm container_name #start, stop, remove container
+
+# docker run --network=host -it centos bash #run with --network-host option if you encounter IPv4 not forwarding message
+docker run -dit --name web1 -p 8080:80 -v /home/student/dockerhtml/:/usr/local/apache2/htdocs/ httpd:2.4
+
+docker volume create webserver1
+docker volume ls
+
+docker volume data is saved at /var/lib/docker/bolumes/webserver1 (from docker inspect weserver1 command)
+
+
+docker run -dit --name web1 -p 8080:80 -v webserver1:/usr/local/apache2/htdocs/ httpd:2.4

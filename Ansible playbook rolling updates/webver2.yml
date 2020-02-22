@@ -1,0 +1,135 @@
+---
+#WEBSERVER 1
+- hosts: webserver1.com
+  remote_user: ansible
+  become: yes
+
+  tasks:
+  - name: Disable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb1_dis.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  - name: Copying the html v1 file
+    template: src=/home/ansible/webver2/index.html dest=/var/www/html/index.html
+              owner=apache group=apache mode=0755
+
+  - name: Restart apache service.
+    service: name=httpd state=restarted
+    notify:
+    - reload apache
+
+  - name: Enable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb1_ena.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  handlers:
+    - name: reload apache
+      service: name=httpd state=restarted
+
+    - name: reload haproxy
+      service: name=haproxy state=restarted
+      delegate_to: lbserver.com
+#WEBSERVER 2
+- hosts: webserver2.com
+  remote_user: ansible
+  become: yes
+
+  tasks:
+  - name: Disable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb2_dis.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  - name: Copying the html v1 file
+    template: src=/home/ansible/webver2/index.html dest=/var/www/html/index.html
+              owner=apache group=apache mode=0755
+
+  - name: Restart apache service.
+    service: name=httpd state=restarted
+    notify:
+    - reload apache
+
+  - name: Enable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb2_ena.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  handlers:
+    - name: reload apache
+      service: name=httpd state=restarted
+
+    - name: reload haproxy
+      service: name=haproxy state=restarted
+      delegate_to: lbserver.com
+#WEBSERVER 3
+- hosts: webserver3.com
+  remote_user: ansible
+  become: yes
+
+  tasks:
+  - name: Disable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb3_dis.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  - name: Copying the html v1 file
+    template: src=/home/ansible/webver2/index.html dest=/var/www/html/index.html
+              owner=apache group=apache mode=0755
+
+  - name: Restart apache service.
+    service: name=httpd state=restarted
+    notify:
+    - reload apache
+
+  - name: Enable web1 from LB by replacing HAproxy cfg file
+    template: src=/home/ansible/haproxy/haproxyweb3_ena.cfg dest=/etc/haproxy/haproxy.cfg
+              owner=root group=root mode=0755
+    delegate_to: lbserver.com
+
+  - name: Restart haproxy service.
+    service: name=haproxy state=restarted
+    delegate_to: lbserver.com
+    notify:
+    - reload haproxy
+
+  handlers:
+    - name: reload apache
+      service: name=httpd state=restarted
+
+    - name: reload haproxy
+      service: name=haproxy state=restarted
+      delegate_to: lbserver.com
+
+
